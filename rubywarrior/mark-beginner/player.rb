@@ -1,9 +1,7 @@
 class Player
   def play_turn(warrior)
-    if warrior.feel.empty?
-      warrior.walk!
-    else
-      warrior.attack!
-    end
+    return warrior.attack! unless warrior.feel.empty?
+    return warrior.rest! unless warrior.health == 20
+    warrior.walk!
   end
 end
