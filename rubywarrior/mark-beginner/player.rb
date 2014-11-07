@@ -10,6 +10,7 @@ class Player
     return warrior.walk! :backward if took_damage? and hurting_badly?
     return warrior.rest! unless healthy? or took_damage?
     return warrior.rescue! if warrior.feel.captive?
+    return warrior.pivot! if warrior.feel.wall?
     warrior.walk!
   end
 
@@ -30,7 +31,7 @@ class Player
   end
 
   def something_to_kill?
-    !(warrior.feel.empty? || warrior.feel.captive?)
+    warrior.feel.enemy?
   end
 
   def took_damage?
