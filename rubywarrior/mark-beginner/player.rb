@@ -42,10 +42,6 @@ class Player
     warrior.pivot! if warrior.feel.wall?
   end
 
-  def hurting_badly?
-    health < MAX_HEALTH / 2
-  end
-
   def walk
     warrior.walk!
   end
@@ -80,12 +76,16 @@ class Player
   end
 
   def ranged_enemy?(space)
-    [ RubyWarrior::Units::Archer,
-      RubyWarrior::Units::Wizard].any? do |c|
+    # Is this cheating?
+    [RubyWarrior::Units::Archer,
+     RubyWarrior::Units::Wizard].any? do |c|
       space.unit.is_a? c
     end
   end
 
+  def hurting_badly?
+    health < MAX_HEALTH / 2
+  end
 
   def took_damage?
     health < previous_health
