@@ -58,22 +58,34 @@ class Player
     warrior.attack! if next_to_enemy?
   end
 
-  def shoot
-    warrior.shoot! if see_enemy?
-  end
-
   def next_to_enemy?
     warrior.feel.enemy?
   end
 
-  def see_enemy?
-    thing = nearest_thing
-    thing && thing.enemy?
+  def shoot
+    shoot_at direction_to_ranged_enemy
   end
 
-  def nearest_thing
-    warrior.look.find { |s| !s.empty? }
+  def shoot_at(direction)
+    warrior.shoot! direction if direction
   end
+
+  def direction_to_ranged_enemy
+    spaces = warrior.look(:forward).zip warrior.look(:backward)
+    spaces.each do |space|
+      return :forward if ranged_enemy?(space[0])
+      return :backward if ranged_enemy?(space[1])
+    end
+    nil
+  end
+
+  def ranged_enemy?(space)
+    [ RubyWarrior::Units::Archer,
+      RubyWarrior::Units::Wizard].any? do |c|
+      space.unit.is_a? c
+    end
+  end
+
 
   def took_damage?
     health < previous_health
