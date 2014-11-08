@@ -5,23 +5,16 @@ class Player
 
   def play_turn(warrior)
     self.warrior = warrior
-    return kill! if something_to_kill?
-    return backup! if took_damage? && hurting_badly?
-    return warrior.rest! unless healthy? || took_damage?
-    return warrior.rescue! if warrior.feel.captive?
-    return warrior.pivot! if warrior.feel.wall?
-    warrior.walk!
+
+    kill ||
+    retreat ||
+    rest ||
+    free_captive ||
+    turn_around ||
+    walk
   end
 
   protected
-
-  def backup!
-    warrior.walk! :backward
-  end
-
-  def hurting_badly?
-    health < MAX_HEALTH / 2
-  end
 
   def warrior=(value)
     self.health = value.health
@@ -33,13 +26,40 @@ class Player
     @health = value
   end
 
-  def something_to_kill?
-    next_to_enemy? || see_enemy?
+  def retreat
+    warrior.walk! :backward if took_damage? && hurting_badly?
   end
 
-  def kill!
-    return warrior.attack! if next_to_enemy?
-    return warrior.shoot! if see_enemy?
+  def rest
+    warrior.rest! unless healthy? || took_damage?
+  end
+
+  def free_captive
+    warrior.rescue! if warrior.feel.captive?
+  end
+
+  def turn_around
+    warrior.pivot! if warrior.feel.wall?
+  end
+
+  def hurting_badly?
+    health < MAX_HEALTH / 2
+  end
+
+  def walk
+    warrior.walk!
+  end
+
+  def kill
+    stab || shoot
+  end
+
+  def stab
+    warrior.attack! if next_to_enemy?
+  end
+
+  def shoot
+    warrior.shoot! if see_enemy?
   end
 
   def next_to_enemy?
