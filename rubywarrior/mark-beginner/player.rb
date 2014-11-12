@@ -7,11 +7,12 @@ class Player
     self.warrior = warrior
 
     kill ||
-    retreat ||
-    rest ||
-    free_captive ||
-    turn_around ||
-    walk
+      retreat ||
+      rest ||
+      free_captive ||
+      walk_to_captive ||
+      turn_around ||
+      walk
   end
 
   protected
@@ -32,6 +33,17 @@ class Player
 
   def rest
     warrior.rest! unless healthy? || took_damage?
+  end
+
+  def walk_to_captive
+    forward = warrior.look :forward
+    backward = warrior.look :backward
+    spaces = forward.zip backward
+    spaces.each do |space|
+      return warrior.walk! :forward if space[0].captive?
+      return warrior.pivot! if space[1].captive?
+    end
+    false
   end
 
   def free_captive
