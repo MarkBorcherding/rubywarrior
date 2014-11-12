@@ -67,10 +67,17 @@ class Player
   end
 
   def direction_to_ranged_enemy
-    spaces = warrior.look(:forward).zip warrior.look(:backward)
+    forward = warrior.look :forward
+    backward = warrior.look :backward
+
+    forward_captive = backward_captive = false
+
+    spaces = forward.zip backward
     spaces.each do |space|
-      return :forward if ranged_enemy?(space[0])
-      return :backward if ranged_enemy?(space[1])
+      forward_captive ||= space[0].captive?
+      backward_captive ||= space[1].captive?
+      return :forward if ranged_enemy?(space[0]) && !forward_captive
+      return :backward if ranged_enemy?(space[1]) && !backward_captive
     end
     nil
   end
