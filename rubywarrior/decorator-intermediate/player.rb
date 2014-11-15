@@ -26,7 +26,10 @@ class Player
                  :health,
                  :listen,
                  :rest!,
+                 :rescue!,
                  :walk!
+
+  MAX_HEALTH = 20
 
   def play_turn(warrior)
     self.warrior = warrior
@@ -41,5 +44,9 @@ class Player
 
   def turn
     super
+  end
+
+  def healthy?
+    health == MAX_HEALTH
   end
 end

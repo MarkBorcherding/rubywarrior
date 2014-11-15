@@ -1,10 +1,13 @@
 module Listen
   def turn
-    return walk! direction_of nearby_units[0] if nearby_units.any?
-    super
-  end
+    return super unless listen.any?
+    listen.each do |u|
+      d = direction_of(u)
+      return walk! d unless feel(d).stairs?
+    end
 
-  def nearby_units
-    warrior.listen
+    directions.each do |d|
+      return walk! d if feel(d).empty? && !feel(d).stairs?
+    end
   end
 end

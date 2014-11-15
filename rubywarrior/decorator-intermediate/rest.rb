@@ -1,6 +1,6 @@
 module Rest
   def turn
-    return rest! unless health == 20
+    return rest! unless healthy?
     super
   end
 end
