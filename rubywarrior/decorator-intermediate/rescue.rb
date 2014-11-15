@@ -1,8 +1,8 @@
 module Rescue
-  def play_turn(warrior)
+  def turn
     directions.each do |direction|
       return warrior.rescue! direction if warrior.feel(direction).captive?
     end
-    super(warrior)
+    super
   end
 end

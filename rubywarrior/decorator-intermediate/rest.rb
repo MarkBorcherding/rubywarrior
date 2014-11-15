@@ -1,6 +1,6 @@
 module Rest
-  def play_turn(warrior)
+  def turn
     return warrior.rest! unless warrior.health == 20
-    super(warrior)
+    super
   end
 end

@@ -1,14 +1,14 @@
 module Bind
-  def play_turn(warrior)
-    return super(warrior) unless surrounded?(warrior)
-    warrior.bind! enemy_directions(warrior)[0]
+  def turn
+    return super unless surrounded?
+    warrior.bind! enemy_directions[0]
   end
 
-  def surrounded?(warrior)
-    enemy_directions(warrior).length > 1
+  def surrounded?
+    enemy_directions.length > 1
   end
 
-  def enemy_directions(warrior)
+  def enemy_directions
     directions.select { |d| warrior.feel(d).enemy? }
   end
 end

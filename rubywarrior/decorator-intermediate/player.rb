@@ -4,6 +4,12 @@ require_relative 'rest'
 require_relative 'rescue'
 require_relative 'bind'
 
+module Listen
+  def play_turn(warrior)
+    super
+  end
+end
+
 class Player
   include Walk
   include Rescue
@@ -11,7 +17,19 @@ class Player
   include Attack
   include Bind
 
+  attr_accessor :warrior
+
   def directions
     [:forward, :left, :right, :backward]
   end
+
+  def play_turn(warrior)
+    self.warrior = warrior
+    turn
+  end
+
+  def turn
+    super
+  end
+
 end

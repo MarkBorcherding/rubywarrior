@@ -1,5 +1,5 @@
 module Walk
-  def play_turn(warrior)
+  def turn
     warrior.walk! warrior.direction_of_stairs
   end
 end
