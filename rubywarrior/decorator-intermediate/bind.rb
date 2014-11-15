@@ -1,7 +1,7 @@
 module Bind
   def turn
     return super unless surrounded?
-    warrior.bind! enemy_directions[0]
+    bind! enemy_directions[0]
   end
 
   def surrounded?
@@ -9,6 +9,6 @@ module Bind
   end
 
   def enemy_directions
-    directions.select { |d| warrior.feel(d).enemy? }
+    directions.select { |d| feel(d).enemy? }
   end
 end

@@ -1,7 +1,7 @@
 module Rescue
   def turn
     directions.each do |direction|
-      return warrior.rescue! direction if warrior.feel(direction).captive?
+      return rescue! direction if feel(direction).captive?
     end
     super
   end

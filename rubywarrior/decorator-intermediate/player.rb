@@ -1,19 +1,10 @@
+require 'forwardable'
 require_relative 'walk'
 require_relative 'attack'
 require_relative 'rest'
 require_relative 'rescue'
 require_relative 'bind'
-
-module Listen
-  def turn
-    return warrior.walk! warrior.direction_of nearby_units[0] if nearby_units.any?
-    super
-  end
-
-  def nearby_units
-    warrior.listen
-  end
-end
+require_relative 'listen'
 
 class Player
   include Walk
@@ -25,13 +16,27 @@ class Player
 
   attr_accessor :warrior
 
-  def directions
-    [:forward, :left, :right, :backward]
-  end
+  extend Forwardable
+  def_delegators :warrior,
+                 :attack!,
+                 :bind!,
+                 :direction_of,
+                 :direction_of_stairs,
+                 :feel,
+                 :health,
+                 :listen,
+                 :rest!,
+                 :walk!
 
   def play_turn(warrior)
     self.warrior = warrior
     turn
+  end
+
+  private
+
+  def directions
+    [:forward, :left, :right, :backward]
   end
 
   def turn
