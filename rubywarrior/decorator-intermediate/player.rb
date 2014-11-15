@@ -5,13 +5,19 @@ require_relative 'rescue'
 require_relative 'bind'
 
 module Listen
-  def play_turn(warrior)
+  def turn
+    return warrior.walk! warrior.direction_of nearby_units[0] if nearby_units.any?
     super
+  end
+
+  def nearby_units
+    warrior.listen
   end
 end
 
 class Player
   include Walk
+  include Listen
   include Rescue
   include Rest
   include Attack
@@ -31,5 +37,4 @@ class Player
   def turn
     super
   end
-
 end
