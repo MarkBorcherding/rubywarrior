@@ -1,21 +1,15 @@
 module Listen
   def turn
     return super unless listen.any?
-    listen
-      .map(&method(:direction_of))
-      .reject(&method(:stairs?))
-      .each do |d|
-        return walk! d
-      end
+    walk! (direction_to_enemys + empty_spaces).reject(&method(:stairs?))[0]
+  end
 
-    directions
-      .reject(&method(:stairs?))
-      .select(&method(:empty?))
-      .each do |d|
-        return walk! d
-      end
+  def direction_to_enemys
+    listen.map(&method(:direction_of))
+  end
 
-    fail 'never get here'
+  def empty_spaces
+    directions.select(&method(:empty?))
   end
 
   def empty?(direction)
